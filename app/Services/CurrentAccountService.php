@@ -30,6 +30,11 @@ class CurrentAccountService implements AccountInterface, CurrentAccountInterface
     {
         try {
             $account = CurrentAccount::find($id);
+
+            if ($value == 0) {
+                return ["error"  => "Valor inválido"];
+            }
+
             if (!Hash::check($password, $account->password)) {
                 return ["error"  => "Senha inválida"];
             }
@@ -54,6 +59,11 @@ class CurrentAccountService implements AccountInterface, CurrentAccountInterface
     {
         try {
             $account = CurrentAccount::find($id);
+
+            if ($value == 0) {
+                return ["error"  => "Valor inválido"];
+            }
+
             if (!Hash::check($password, $account->password)) {
                 return ["error"  => "Senha inválida"];
             }
