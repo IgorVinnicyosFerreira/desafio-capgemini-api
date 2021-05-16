@@ -11,12 +11,21 @@ class AuthController extends Controller
 {
     public function login(LoginRequest $request)
     {
-        $credentials = $request->validated();
+        $credentials = [
+            "agencies_number"       =>  $request->get("agencies_number"),
+            "number"                =>  $request->get("number"),
+            "verification_digit"    =>  $request->get("verification_digit"),
+            "password"              =>  $request->get("password"),
+        ];
 
         if (Auth::attempt($credentials)) {
             /** @var CurrentAccount */
             $account = Auth::user();
-            $token = $account->createToken("CAPGEMINI BANK", [])->plainTextToken;
+            $token = "";
+
+            if ($request->get("device", false)) {
+                $token = $account->createToken("CAPGEMINI BANK", [])->plainTextToken;
+            }
 
             return response()->json([
                 "token"     =>  $token,
@@ -27,10 +36,10 @@ class AuthController extends Controller
         return response()->json(["msg" => 'Dados bancários inválidos ou inexistentes'], 401);
     }
 
+    // only sanctum cookie mode
     public function logout()
     {
-        Auth::user()->currentAccessToken()->delete();
-
+        Auth::guard('web')->logout();
         return response()->json([], 204);
     }
 }

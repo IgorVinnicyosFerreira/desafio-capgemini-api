@@ -27,7 +27,8 @@ class LoginRequest extends FormRequest
             "agencies_number"       =>  "required|exists:agencies,number",
             "number"                =>  "required|exists:current_accounts,number",
             "verification_digit"    =>  "required",
-            "password"              =>  "required"
+            "password"              =>  "required",
+            "device"                =>  "nullable"
         ];
     }
 
